@@ -22,7 +22,7 @@ public class CalorieGoalFood {                  // CalorieGoal 엔티티 클래�
     @JoinColumn(name = "calorie_goal_id")
     private CalorieGoal calorieGoal;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "food_id")
     private Food food;
 
@@ -36,12 +36,13 @@ public class CalorieGoalFood {                  // CalorieGoal 엔티티 클래�
 
 
     // 생성 메소드 //
-    public static CalorieGoalFood createCalorieGoalFood(Food food, double gramAmount) {    // 음식 정보와 사용자가 실제 섭취한 음식량을 전달받아 새로운 인스턴스 생성
+    public static CalorieGoalFood createCalorieGoalFood(CalorieGoal calorieGoal, Food food, double gramAmount) {    // 음식 정보와 사용자가 실제 섭취한 음식량을 전달받아 새로운 인스턴스 생성
         CalorieGoalFood calorieGoalFood = new CalorieGoalFood();
         double ratio = gramAmount / 100;
 
         calorieGoalFood.setFood(food);
         calorieGoalFood.setActualConsumption(ratio * food.getCaloriePerHundred());
+        calorieGoalFood.setCalorieGoalRelation(calorieGoal);
 
         return calorieGoalFood;
     }

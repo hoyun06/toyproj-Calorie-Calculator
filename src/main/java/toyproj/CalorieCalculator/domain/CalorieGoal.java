@@ -32,19 +32,25 @@ public class CalorieGoal {
     @OneToMany(mappedBy = "calorieGoal", cascade = CascadeType.ALL)
     private List<CalorieGoalFood> calorieGoalFoods = new ArrayList<>();
 
-    public void changeGoalAmount(double goalAmount) {
-        this.goalAmount = goalAmount;
+    public void addConsumption(double amount) {
+        totalConsumption += amount;
     }
 
+    public void removeConsumption(double amount) {
+        if(amount > totalConsumption) {
+            throw new IllegalStateException("총 칼로리량을 초과할 수 없습니다.");
+        }
+        totalConsumption -= amount;
+    }
 
     // 생성 메소드 //
     // 사용자 정보, 목표 칼로리량, 날짜를 넘겨 받아 새로운 CalorieGoal 인스턴스 생성
-    public static CalorieGoal createCalorieGoal(AccountUser user, double goalAmount, LocalDate date) {
+    public static CalorieGoal createCalorieGoal(AccountUser user, double goalAmount) {
         CalorieGoal calorieGoal = new CalorieGoal();
 
         calorieGoal.setUser(user);
         calorieGoal.setGoalAmount(goalAmount);
-        calorieGoal.setDate(date);
+        calorieGoal.setDate(LocalDate.now());
 
         return calorieGoal;
     }

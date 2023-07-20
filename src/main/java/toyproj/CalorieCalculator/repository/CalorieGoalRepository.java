@@ -20,6 +20,12 @@ public class CalorieGoalRepository {
         return calorieGoal.getId();
     }
 
+    public Long delete(CalorieGoal calorieGoal) {
+        Long id = calorieGoal.getId();
+        em.remove(calorieGoal);
+        return id;
+    }
+
     public Optional<CalorieGoal> findOne(Long id) {
         return Optional.ofNullable(em.find(CalorieGoal.class, id));
     }
@@ -31,12 +37,12 @@ public class CalorieGoalRepository {
                 .getResultList();
     }
 
-    public CalorieGoal findByUserIdAndDate(Long userId, LocalDate date) {       // 특정 사용자가 생성한 모든 CalorieGoal 중에서 특정 날짜를 통해 조회. 사용자는 하루에 한 개씩만 
+    public Optional<CalorieGoal> findByUserIdAndDate(Long userId, LocalDate date) {       // 특정 사용자가 생성한 모든 CalorieGoal 중에서 특정 날짜를 통해 조회. 사용자는 하루에 한 개씩만
                                                                                 // CalorieGoal 을 생성 가능하므로 CalorieGoal 인스턴스로 반환
-        return em.createQuery("select c from CalorieGoal c join c.user u on u.id = :userId" +
+        return Optional.ofNullable(em.createQuery("select c from CalorieGoal c join c.user u on u.id = :userId" +
                         " where c.date = :date", CalorieGoal.class)
                 .setParameter("userId", userId)
                 .setParameter("date", date)
-                .getSingleResult();
+                .getSingleResult());
     }
 }

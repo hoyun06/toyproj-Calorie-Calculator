@@ -18,13 +18,11 @@ public class AccountUserService {
     private final AccountUserRepository accountUserRepository;
 
     public Long join(AccountUser accountUser) {
-        try {
-            validate(accountUser);
-            return accountUserRepository.save(accountUser);
-        } catch(Exception e) {
-            log.info(e.getMessage());
-            return null;
-        }
+            if(validate(accountUser)) {
+                return accountUserRepository.save(accountUser);
+            } else {
+                throw new IllegalStateException("이미 존재하는 회원입니다.");
+            }
     }
 
     public Optional<AccountUser> getUserById(Long id) {
@@ -39,10 +37,8 @@ public class AccountUserService {
         return accountUserRepository.findByUsername(username);
     }
 
-    private void validate(AccountUser accountUser) {
-        if(accountUserRepository.findByName(accountUser.getName()).isPresent() ||
-                accountUserRepository.findByUsername(accountUser.getUsername()).isPresent()) {
-            throw new IllegalStateException("이미 존재하는 회원입니다.");
-        }
+    private boolean validate(AccountUser accountUser) {
+        return accountUserRepository.findByName(accountUser.getName()).isEmpty()
+                && accountUserRepository.findByUsername(accountUser.getUsername()).isEmpty();
     }
 }
