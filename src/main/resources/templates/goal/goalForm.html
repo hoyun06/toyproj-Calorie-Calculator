@@ -1,0 +1,20 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Calorie Calculator</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrinkto-fit=no">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+<div class="container">
+    <div>
+        <h1>오늘의 목표 칼로리량을 설정하세요.</h1>
+        <form action = "/goal/new" method="POST">
+            <input type="text" name="goalAmount" id="goalAmount">
+            <button type="submit">저장하기</button>
+        </form>
+    </div>
+</div> <!-- /container -->
+</body>
+</html>

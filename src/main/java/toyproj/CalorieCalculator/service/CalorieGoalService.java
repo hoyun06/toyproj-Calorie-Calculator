@@ -1,5 +1,6 @@
 package toyproj.CalorieCalculator.service;
 
+import jakarta.persistence.NoResultException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,9 +26,14 @@ public class CalorieGoalService {
         return calorieGoalRepository.save(calorieGoal);
     }
 
+    public Long updateCalorieGoal(Long calorieGoalId, double goalAmount) {
+        calorieGoalRepository.update(calorieGoalId, goalAmount);
+        return calorieGoalId;
+    }
+
     public Long removeCalorieGoal(AccountUser user, LocalDate date) {
         CalorieGoal calorieGoal = calorieGoalRepository.findByUserIdAndDate(user.getId(), date)
-                .orElseThrow();
+                .orElseThrow(() -> new NoResultException());
 
         return calorieGoalRepository.delete(calorieGoal);
     }

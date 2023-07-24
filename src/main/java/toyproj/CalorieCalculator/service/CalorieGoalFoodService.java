@@ -1,5 +1,6 @@
 package toyproj.CalorieCalculator.service;
 
+import jakarta.persistence.NoResultException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -26,7 +27,7 @@ public class CalorieGoalFoodService {
     public Long addCalorieGoalFood(AccountUser accountUser, Food food, double gramAmount) {
 
         CalorieGoal findCalorieGoal = calorieGoalRepository.findByUserIdAndDate(accountUser.getId(), LocalDate.now())
-                .orElseThrow();
+                .orElseThrow(() -> new NoResultException());
 
         CalorieGoalFood calorieGoalFood = CalorieGoalFood.createCalorieGoalFood(findCalorieGoal, food, gramAmount);
 
@@ -37,7 +38,7 @@ public class CalorieGoalFoodService {
 
     public Long removeCalorieGoalFood(AccountUser accountUser, CalorieGoalFood calorieGoalFood) {
         CalorieGoal findCalorieGoal = calorieGoalRepository.findByUserIdAndDate(accountUser.getId(), LocalDate.now())
-                .orElseThrow();
+                .orElseThrow(() -> new NoResultException());
 
         findCalorieGoal.getCalorieGoalFoods().remove(calorieGoalFood);
 

@@ -1,0 +1,33 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Calorie Calculator</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrinkto-fit=no">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+<div>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Calorie Goal ID</th>
+            <th>Goal Amount</th>
+            <th>Total Consumption</th>
+            <th>Date</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="calorieGoal : ${calorieGoals}">
+            <td th:text="${calorieGoal.id}"></td>
+            <td th:text="${calorieGoal.goalAmount}"></td>
+            <td th:text="${calorieGoal.totalConsumption}"></td>
+            <td th:text="${calorieGoal.date}"></td>
+        </tr>
+        </tbody>
+    </table>
+    <a href="/">홈으로 돌아가기</a>
+    <a href="/food">오늘 먹은 음식 조회/추가하기</a>
+</div>
+</body>
+</html>

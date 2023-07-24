@@ -1,7 +1,11 @@
 <!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="es" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
-    <title>Hello</title>
+    <title>Calorie Calculator</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrinkto-fit=no">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
 <body>
@@ -11,7 +15,8 @@
         <p class="lead">회원 기능</p>
         <p>
             <a class="btn btn-lg btn-secondary" href="/user/new">회원 가입</a>
-            <a class="btn btn-lg btn-secondary" href="/login">로그인</a>
+            <a class="btn btn-lg btn-secondary" href="/login" sec:authorize="isAnonymous()">로그인</a>
+            <a class="btn btn-lg btn-secondary" type="submit" href="/logout" sec:authorize="isAuthenticated()">로그아웃</a>
         </p>
         <p class="lead">조회 기능</p>
         <p>

@@ -39,6 +39,7 @@ public class AccountUserService {
 
     private boolean validate(AccountUser accountUser) {
         return accountUserRepository.findByName(accountUser.getName()).isEmpty()
-                && accountUserRepository.findByUsername(accountUser.getUsername()).isEmpty();
+                && accountUserRepository.findByUsername(accountUser.getUsername()).isEmpty()
+                && accountUserRepository.findByEmail(accountUser.getEmail()).isEmpty();
     }
 }

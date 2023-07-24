@@ -1,15 +1,10 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrinkto-fit=no">
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="/css/bootstrap.min.css" integrity="sha384-
-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
-          crossorigin="anonymous">
-    <!-- Custom styles for this template -->
-    <title>Hello, world!</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Calorie Calculator</title>
 </head>
 <style>
  .fieldError {
@@ -21,7 +16,8 @@ ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
     <form role="form" action="/user/new" th:object="${userDto}" method="post">
         <div class="form-group">
             <label th:for="name">이름</label>
-            <input type="text" th:field="*{name}" class="form-control" placeholder="이름을 입력하세요" th:class="${#fields.hasErrors('name')}? 'form-control fieldError' : 'form-control'">
+            <input type="text" th:field="*{name}" class="form-control" placeholder="이름을 입력하세요"
+                   th:errorclass = "fieldError">
             <p th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Incorrect data</p>
         </div>
         <div class="form-group">
@@ -55,6 +51,9 @@ ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
                    th:class="${#fields.hasErrors('email')}? 'form-control fieldError' : 'form-control'">
             <p th:if="${#fields.hasErrors('email')}"
                th:errors="*{email}">Incorrect data</p>
+        </div>
+        <div class="form-group" th:if="${#fields.hasErrors('global')}">
+            <p th:each="err : ${#fields.errors('global')}" th:text="${err}"/>
         </div>
         <button type="submit" class="btn btn-primary">Submit</button>
     </form>

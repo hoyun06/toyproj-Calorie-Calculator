@@ -43,12 +43,17 @@ public class CalorieGoal {
         totalConsumption -= amount;
     }
 
+    public void changeGoalAmount(double goalAmount) {
+        this.goalAmount = goalAmount;
+    }
+
     // 생성 메소드 //
     // 사용자 정보, 목표 칼로리량, 날짜를 넘겨 받아 새로운 CalorieGoal 인스턴스 생성
     public static CalorieGoal createCalorieGoal(AccountUser user, double goalAmount) {
         CalorieGoal calorieGoal = new CalorieGoal();
 
         calorieGoal.setUser(user);
+        calorieGoal.setTotalConsumption(0.0d);
         calorieGoal.setGoalAmount(goalAmount);
         calorieGoal.setDate(LocalDate.now());
 

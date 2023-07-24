@@ -21,11 +21,7 @@ public class CalorieTest {
 
     @Test
     void calorieGoalEntityTest() {
-        AccountUser user = new AccountUser();
-        user.changeName("hello");
-        user.changeUsername("hoyun06");
-        user.changePassword("pwd");
-        user.changeEmail("email@gmail.com");
+        AccountUser user = new AccountUser("hello","hoyun06", "pwd","email@gmail.com");
 
         //CalorieGoal goal = new CalorieGoal();
         //goal.setUser(user);
