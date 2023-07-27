@@ -1,0 +1,20 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Calorie Calculator</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrinkto-fit=no">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+<div class="container">
+    <div>
+        <h1>오늘 먹은 음식의 칼로리량을 검색해 보세요.</h1>
+        <form action = "/api/food" method="POST">
+            <input type="text" name="foodName" id="foodName">
+            <button type="submit">검색하기</button>
+        </form>
+    </div>
+</div> <!-- /container -->
+</body>
+</html>
