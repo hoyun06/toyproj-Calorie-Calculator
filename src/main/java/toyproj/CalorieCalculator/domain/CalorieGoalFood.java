@@ -15,7 +15,7 @@ public class CalorieGoalFood {                  // CalorieGoal 엔티티 클래�
     @Column(name = "calorie_goal_food_id")
     private Long id;
 
-    private Double actualConsumption;          // open api 로부터 받아오는 칼로리 정보는 100g 기준으로 산정한 데이터이므로
+    private Double actualConsumption;          // open api 로부터 받아오는 칼로리 정보는 1회 제공량 기준으로 산정한 데이터이므로
                                                // 사용자가 섭취한 음식의 양(그램 수)을 고려한 실제 칼로리 섭취량
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -38,10 +38,9 @@ public class CalorieGoalFood {                  // CalorieGoal 엔티티 클래�
     // 생성 메소드 //
     public static CalorieGoalFood createCalorieGoalFood(CalorieGoal calorieGoal, Food food, double gramAmount) {    // 음식 정보와 사용자가 실제 섭취한 음식량을 전달받아 새로운 인스턴스 생성
         CalorieGoalFood calorieGoalFood = new CalorieGoalFood();
-        double ratio = gramAmount / 100;
 
         calorieGoalFood.setFood(food);
-        calorieGoalFood.setActualConsumption(ratio * food.getCaloriePerHundred());
+        calorieGoalFood.setActualConsumption(gramAmount * food.getCaloriePerGram());
         calorieGoalFood.setCalorieGoalRelation(calorieGoal);
 
         return calorieGoalFood;
