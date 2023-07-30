@@ -9,13 +9,13 @@
 <body>
 <div class="container">
     <div>
-        <h1>오늘 먹은 음식의 칼로리량을 검색해 보세요.</h1>
-        <form action = "/api/food" method="POST">
-            <input type="text" name="foodName" id="foodName">
-            <button type="submit">검색하기</button>
+        <h1>실제로 섭취한 음식의 양을 gram 단위로 입력하세요.</h1>
+        <form th:action = "@{/consumption/new(name = ${foodDto.name},
+        calorie = ${foodDto.calorie}, size = ${foodDto.size}, foodCode = ${foodDto.foodCode})}" method="POST">
+            <input type="text" name="consumption" id="consumption">
+            <button type="submit">추가하기</button>
         </form>
     </div>
 </div> <!-- /container -->
-<a href="/">홈으로 돌아가기</a>
 </body>
 </html>

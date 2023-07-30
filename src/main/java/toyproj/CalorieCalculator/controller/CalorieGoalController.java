@@ -1,5 +1,6 @@
 package toyproj.CalorieCalculator.controller;
 
+import jakarta.persistence.NoResultException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -10,10 +11,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import toyproj.CalorieCalculator.domain.AccountUser;
 import toyproj.CalorieCalculator.domain.CalorieGoal;
+import toyproj.CalorieCalculator.domain.CalorieGoalFood;
+import toyproj.CalorieCalculator.dto.FoodDto;
 import toyproj.CalorieCalculator.service.AccountUserService;
 import toyproj.CalorieCalculator.service.CalorieGoalService;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -39,6 +43,28 @@ public class CalorieGoalController {
         return "goal/goalList";
     }
 
+    @GetMapping("/goal/delete")
+    public String removeGoal(@RequestParam Long goalId) {
+        try {
+            calorieGoalService.removeCalorieGoal(goalId);
+            return "redirect:/goals";
+        }catch (NoResultException e) {
+            System.out.println("error message = " + e.getMessage());
+            return "redirect:/goals";
+        }
+    }
+
+    @GetMapping("/goal/check/food")
+    public String checkFood(@RequestParam Long goalId, Model model) {
+        CalorieGoal calorieGoal = calorieGoalService.getCalorieGoalById(goalId).get();
+
+        List<CalorieGoalFood> list = calorieGoal.getCalorieGoalFoods();
+
+        model.addAttribute("calorieGoalList", list);
+
+        return "goal/goalFoodList";
+    }
+
     @PostMapping("/goal/new")
     public String addNewGoal(@AuthenticationPrincipal UserDetails userDetails, @RequestParam String goalAmount) {
         double amount = Double.parseDouble(goalAmount);
@@ -56,5 +82,6 @@ public class CalorieGoalController {
 
         return "redirect:/goals";
     }
+
 
 }

@@ -48,7 +48,16 @@ public class ApiController {
             foods = apiService.foodPage(PageRequest.of(page.get() - 1, 10));
         }
 
+        int min,max;
+        min = Math.max(1, foods.getPageable().getPageNumber() - 1);
+
+        if(min == 1) max = Math.min(foods.getTotalPages(), 5);
+        else max = Math.min(foods.getTotalPages(), foods.getPageable().getPageNumber() + 3);
+
         model.addAttribute("foods", foods);
+        model.addAttribute("min",min);
+        model.addAttribute("max",max);
+
         return "api/foodList";
     }
 
@@ -89,13 +98,17 @@ public class ApiController {
                 sb.append(line);
             }
 
-            // Json serializing 라이브러리인 GSON 을 이용해서 String 형식이었던 Json 을
-            // 실제 Json Object 로 변환한 뒤 원하는 필드만을 추출하여 JsonArray 형식으로 반환
+            // Json serializing 라이브러리인 GSON 을 이용해서 String 형식이었던 Json 을 실제 Json Object 로 변환
             JsonObject jsonObject = JsonParser.parseString(sb.toString()).getAsJsonObject();
+            
+            // 변환한 json object 내부 구조가 I2790 -> RESULT -> CODE 이렇게 되어있는데 이 CODE 의 value 값이 
+            // INFO-200 이라면 요청한 음식 이름에 대한 정보가 없다는 뜻이므로 음식 이름을 다시 제출하도록 처리
             if(jsonObject.get("I2790").getAsJsonObject().get("RESULT").getAsJsonObject().get("CODE").getAsString().equals("INFO-200")) {
                 System.out.println("Data not available. Plese check your searchText");
                 return "api/foodForm";
             }
+
+            // 요청한 음식에 대한 데이터가 있는 경우 jsonObject 내에서 원하는 필드만을 추출하여 JsonArray 형식으로 반환
             JsonArray jsonArray = jsonObject.get("I2790").getAsJsonObject().get("row").getAsJsonArray();
 
             List<FoodDto> foodList = apiService.getFoodList();
@@ -106,8 +119,14 @@ public class ApiController {
             // FoodDto 형식의 인스턴스로 생성후 foodList 에 추가
             for (JsonElement element : jsonArray) {
                 JsonObject object = element.getAsJsonObject();
-                foodList.add(new FoodDto(object.get("NUTR_CONT1").toString(),
-                        object.get("DESC_KOR").toString(), object.get("FOOD_CD").toString(), object.get("SERVING_SIZE").toString()));
+                
+                // 받아온 데이터 문자열 내부에 자체 쌍따옴표가 포함되어 있어서 그 쌍따옴표들 다 제거해주는 작업
+                String calorie = object.get("NUTR_CONT1").toString().replace("\"", "");
+                String name = object.get("DESC_KOR").toString().replace("\"", "");
+                String foodCode = object.get("FOOD_CD").toString().replace("\"", "");
+                String size = object.get("SERVING_SIZE").toString().replace("\"", "");
+
+                foodList.add(new FoodDto(calorie, name, foodCode, size));
             }
 
             return "redirect:/api/list";

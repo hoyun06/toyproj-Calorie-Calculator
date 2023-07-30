@@ -31,8 +31,8 @@ public class CalorieGoalService {
         return calorieGoalId;
     }
 
-    public Long removeCalorieGoal(AccountUser user, LocalDate date) {
-        CalorieGoal calorieGoal = calorieGoalRepository.findByUserIdAndDate(user.getId(), date)
+    public Long removeCalorieGoal(Long goalId) {
+        CalorieGoal calorieGoal = calorieGoalRepository.findOne(goalId)
                 .orElseThrow(() -> new NoResultException());
 
         return calorieGoalRepository.delete(calorieGoal);
